@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>三年级下册科学刷题乐园</title>
+  <style>
+    :root {
+      --blue: #2487ff;
+      --green: #18a957;
+      --red: #ef4444;
+      --yellow: #ffd84d;
+      --purple: #8b5cf6;
+      --ink: #17324d;
+      --muted: #607086;
+      --paper: #fffdf6;
+      --line: #d7e5f5;
+      --shadow: 0 12px 28px rgba(31, 64, 104, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Arial Rounded MT Bold", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255, 216, 77, .42), transparent 30%),
+        radial-gradient(circle at 92% 10%, rgba(36, 135, 255, .26), transparent 28%),
+        linear-gradient(135deg, #e9f7ff 0%, #fff8df 48%, #eef9ef 100%);
+    }
+
+    .app {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      padding: 18px 0 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.05;
+      color: #0f5fcc;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      font-size: clamp(15px, 2.7vw, 19px);
+      color: var(--muted);
+    }
+
+    .reset {
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: #ffffff;
+      color: var(--red);
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 10px 0 16px;
+    }
+
+    .stat {
+      min-height: 86px;
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255, 255, 255, .88);
+      box-shadow: var(--shadow);
+      border: 2px solid rgba(255, 255, 255, .9);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(26px, 5vw, 38px);
+      line-height: 1;
+      color: #0f5fcc;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .93);
+      border: 3px solid #ffffff;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr auto;
+      gap: 12px;
+      padding: 16px;
+      align-items: center;
+      background: linear-gradient(90deg, #ffffff, #f6fbff);
+      border-bottom: 2px solid var(--line);
+    }
+
+    .mode-group, .chapter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .label {
+      width: 100%;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    button, select {
+      font: inherit;
+    }
+
+    .mode-btn, .primary, .ghost {
+      min-height: 44px;
+      border-radius: 14px;
+      border: 2px solid var(--line);
+      padding: 10px 13px;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .mode-btn.active {
+      color: #fff;
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    select {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+      padding: 8px 12px;
+      font-size: 17px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .primary {
+      color: #17324d;
+      border-color: #f7bf18;
+      background: var(--yellow);
+      min-width: 112px;
+    }
+
+    .ghost {
+      color: #0f5fcc;
+      border-color: #b9d7ff;
+      background: #eef6ff;
+    }
+
+    .quiz {
+      padding: 20px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: #eaf4ff;
+      color: #0f5fcc;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .progress {
+      height: 14px;
+      border-radius: 999px;
+      background: #e8eef6;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #18a957, #2487ff);
+      transition: width .25s ease;
+    }
+
+    .question {
+      margin: 0 0 16px;
+      font-size: clamp(22px, 4.6vw, 34px);
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .option {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      align-items: center;
+      gap: 10px;
+      min-height: 74px;
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      background: #fff;
+      color: var(--ink);
+      text-align: left;
+      font-size: clamp(18px, 3.8vw, 24px);
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 0 rgba(37, 99, 235, .08);
+    }
+
+    .option:disabled {
+      cursor: default;
+      opacity: 1;
+    }
+
+    .letter {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--purple);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .option.correct {
+      border-color: var(--green);
+      background: #eafaf0;
+      color: #116334;
+    }
+
+    .option.wrong {
+      border-color: var(--red);
+      background: #fff0f0;
+      color: #9f1e1e;
+    }
+
+    .feedback {
+      min-height: 58px;
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #f6fbff;
+      border: 2px solid var(--line);
+      font-size: clamp(18px, 3.5vw, 24px);
+      font-weight: 900;
+    }
+
+    .feedback.good {
+      color: #116334;
+      background: #eafaf0;
+      border-color: #9be4b5;
+    }
+
+    .feedback.bad {
+      color: #9f1e1e;
+      background: #fff0f0;
+      border-color: #ffb5b5;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      padding: 30px 20px;
+      text-align: center;
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 900;
+      color: var(--muted);
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 12px; }
+      header { align-items: flex-start; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .toolbar { grid-template-columns: 1fr; }
+      .options { grid-template-columns: 1fr; }
+      .quiz { padding: 14px; }
+      .reset { padding: 10px 12px; font-size: 14px; }
+      .option { grid-template-columns: 38px 1fr; min-height: 66px; }
+      .letter { width: 38px; height: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>科学刷题乐园</h1>
+        <p class="subtitle">三年级下册 · 选择题练习 · 自动保存进度</p>
+      </div>
+      <button class="reset" id="resetBtn" type="button">清空记录</button>
+    </header>
+
+    <section class="stats" aria-label="答题统计">
+      <div class="stat"><strong id="doneCount">0</strong><span>已答题</span></div>
+      <div class="stat"><strong id="rightCount">0</strong><span>答对</span></div>
+      <div class="stat"><strong id="rateCount">0%</strong><span>正确率</span></div>
+      <div class="stat"><strong id="wrongCount">0</strong><span>错题收藏</span></div>
+    </section>
+
+    <section class="panel">
+      <div class="toolbar">
+        <div class="mode-group">
+          <span class="label">练习模式</span>
+          <button class="mode-btn active" data-mode="random" type="button">随机出题</button>
+          <button class="mode-btn" data-mode="chapter" type="button">按章节练习</button>
+          <button class="mode-btn" data-mode="wrong" type="button">练错题</button>
+        </div>
+        <div class="chapter-row">
+          <label class="label" for="chapterSelect">章节</label>
+          <select id="chapterSelect"></select>
+        </div>
+        <button class="primary" id="startBtn" type="button">开始</button>
+      </div>
+
+      <div class="quiz" id="quizArea"></div>
+    </section>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      {c:"1.1 根据太阳辨别方向", q:"太阳升起的方向定为哪一方？", a:"东", o:["东","西","南","北"]},
+      {c:"1.1 根据太阳辨别方向", q:"太阳落下的方向定为哪一方？", a:"西", o:["西","东","南","北"]},
+      {c:"1.1 根据太阳辨别方向", q:"面朝东方，向右转就是哪一方？", a:"南", o:["南","北","东","西"]},
+      {c:"1.1 根据太阳辨别方向", q:"面朝西方，向右转就是哪一方？", a:"北", o:["北","南","东","西"]},
+      {c:"1.1 根据太阳辨别方向", q:"阳光下物体的影子与太阳的方向是什么关系？", a:"相反", o:["相反","相同","垂直","没有关系"]},
+      {c:"1.1 根据太阳辨别方向", q:"一天中太阳方向变化规律是东→什么→西？", a:"南", o:["南","北","东","西"]},
+      {c:"1.1 根据太阳辨别方向", q:"一天中影子方向变化规律是西→什么→东？", a:"北", o:["北","南","东","西"]},
+      {c:"1.1 根据太阳辨别方向", q:"使用长的直杆做实验，影子较怎样，更便于测量？", a:"长", o:["长","短","暗","细"]},
+
+      {c:"1.2 利用自然物辨别方向", q:"晴朗夜晚，找到什么就能找到北方？", a:"北极星", o:["北极星","月亮","金星","北斗七星"]},
+      {c:"1.2 利用自然物辨别方向", q:"北半球正午时太阳处于正什么方向？", a:"南", o:["南","北","东","西"]},
+      {c:"1.2 利用自然物辨别方向", q:"南方受阳光照射时间最怎样？", a:"长", o:["长","短","少","弱"]},
+      {c:"1.2 利用自然物辨别方向", q:"南方雪融化得最怎样？", a:"快", o:["快","慢","少","硬"]},
+      {c:"1.2 利用自然物辨别方向", q:"北方雪融化得最怎样？", a:"慢", o:["慢","快","多","亮"]},
+      {c:"1.2 利用自然物辨别方向", q:"喜阳树木向阳面树叶较多的一侧通常是哪侧？", a:"南侧", o:["南侧","北侧","东侧","西侧"]},
+      {c:"1.2 利用自然物辨别方向", q:"树木年轮较疏的一侧通常是什么面？", a:"向阳面（南）", o:["向阳面（南）","背阳面（北）","阴湿面","迎风面"]},
+      {c:"1.2 利用自然物辨别方向", q:"树木年轮较密的一侧通常是什么面？", a:"背阳面（北）", o:["背阳面（北）","向阳面（南）","正午面","开阔面"]},
+      {c:"1.2 利用自然物辨别方向", q:"苔藓茂盛的一侧往往是哪侧？", a:"北侧", o:["北侧","南侧","东侧","西侧"]},
+
+      {c:"1.3 利用磁铁辨别方向", q:"我国古代发现的能吸引铁的特殊石头叫什么？", a:"磁石", o:["磁石","水晶","煤炭","石灰石"]},
+      {c:"1.3 利用磁铁辨别方向", q:"利用磁铁指示方向的关键是让磁铁怎样？", a:"自由转动", o:["自由转动","固定不动","放在水下","靠近铁块"]},
+      {c:"1.3 利用磁铁辨别方向", q:"磁铁指向南方的一端叫什么？", a:"南极（S）", o:["南极（S）","北极（N）","东极（E）","西极（W）"]},
+      {c:"1.3 利用磁铁辨别方向", q:"磁铁指向北方的一端叫什么？", a:"北极（N）", o:["北极（N）","南极（S）","东极（E）","西极（W）"]},
+      {c:"1.3 利用磁铁辨别方向", q:"使用磁铁辨别方向时要避开什么？", a:"其他磁铁或铁制物品", o:["其他磁铁或铁制物品","纸和木头","阳光","空气"]},
+
+      {c:"1.4 磁极与方向", q:"磁铁相互吸引的两个磁极是怎样的磁极？", a:"不同", o:["不同","相同","都在中间","没有磁性"]},
+      {c:"1.4 磁极与方向", q:"磁铁相互排斥的两个磁极是怎样的磁极？", a:"相同", o:["相同","不同","一个强一个弱","都在中间"]},
+      {c:"1.4 磁极与方向", q:"磁铁同极会怎样？", a:"相斥", o:["相斥","相吸","消失","变热"]},
+      {c:"1.4 磁极与方向", q:"磁铁异极会怎样？", a:"相吸", o:["相吸","相斥","断开","变轻"]},
+      {c:"1.4 磁极与方向", q:"地磁的南极在地球地理什么附近？", a:"北极", o:["北极","南极","赤道","月球"]},
+      {c:"1.4 磁极与方向", q:"地磁的北极在地球地理什么附近？", a:"南极", o:["南极","北极","赤道","太阳"]},
+      {c:"1.4 磁极与方向", q:"下列哪项运用了磁极相互作用？", a:"指南针", o:["指南针","玻璃杯","橡皮擦","铅笔芯"]},
+      {c:"1.4 磁极与方向", q:"下列哪项也运用了磁极相互作用？", a:"磁悬浮列车", o:["磁悬浮列车","普通木椅","塑料尺","纸飞机"]},
+
+      {c:"1.5 制作小磁针", q:"被磁铁吸引过的回形针会带一些什么？", a:"磁性", o:["磁性","电流","热量","光线"]},
+      {c:"1.5 制作小磁针", q:"让没有磁性的物体获得磁性的过程叫什么？", a:"磁化", o:["磁化","融化","蒸发","沉淀"]},
+      {c:"1.5 制作小磁针", q:"磁铁磁极的磁性最怎样？", a:"强", o:["强","弱","少","慢"]},
+      {c:"1.5 制作小磁针", q:"磁铁中间部分磁性最怎样？", a:"弱", o:["弱","强","亮","热"]},
+      {c:"1.5 制作小磁针", q:"摩擦小钢针时，通常用磁铁的哪一极？", a:"北极", o:["北极","南极","中间","任意木块"]},
+      {c:"1.5 制作小磁针", q:"摩擦小钢针时，从哪里往针尾方向摩擦？", a:"针头", o:["针头","针尾","针中间","桌面"]},
+      {c:"1.5 制作小磁针", q:"使针获得更强磁性，应选用磁性怎样的磁铁？", a:"强", o:["强","弱","没有磁性","透明"]},
+      {c:"1.5 制作小磁针", q:"使针获得更强磁性，摩擦次数应尽量怎样？", a:"多", o:["多","少","为零","不固定"]},
+      {c:"1.5 制作小磁针", q:"使针获得更强磁性，摩擦时要沿什么方向？", a:"同一个方向", o:["同一个方向","来回方向","任意方向","圆圈方向"]},
+      {c:"1.5 制作小磁针", q:"检测磁性时，吸引铁屑越怎样，磁性越强？", a:"多", o:["多","少","轻","短"]},
+      {c:"1.5 制作小磁针", q:"检测磁性时，停止转动所需时间越怎样，磁性越强？", a:"短", o:["短","长","慢","亮"]},
+      {c:"1.5 制作小磁针", q:"检测磁性时，被吸住时距离越怎样，磁性越强？", a:"长", o:["长","短","近","暗"]},
+
+      {c:"1.6 设计指南针", q:"我国明代哪位航海家的船上指南针发挥了重要作用？", a:"郑和", o:["郑和","张衡","李时珍","祖冲之"]},
+      {c:"1.6 设计指南针", q:"设计指南针需要经历：明确任务、什么、评估与改进？", a:"制定方案", o:["制定方案","马上使用","只看外观","停止测试"]},
+      {c:"1.6 设计指南针", q:"让指南针更精确，应减少什么？", a:"外部干扰", o:["外部干扰","刻度数量","磁针长度","观察次数"]},
+      {c:"1.6 设计指南针", q:"让指南针更精确，可以优化什么？", a:"指南针结构", o:["指南针结构","课本封面","天气预报","铅笔颜色"]},
+      {c:"1.6 设计指南针", q:"让指南针更精确，还要正确怎样指南针？", a:"使用", o:["使用","摇晃","碰撞","隐藏"]},
+
+      {c:"1.7 制作指南针", q:"水浮式指南针在多少年前已在我国海船上使用？", a:"九百多", o:["九百多","十多","一百多","三十多"]},
+      {c:"1.7 制作指南针", q:"制作指南针经历：明确任务→什么→展示与评估→交流？", a:"制作与测试", o:["制作与测试","直接售卖","只画图","只讨论"]},
+
+      {c:"1.8 用指南针“寻宝”", q:"标准指南针的构造包括磁针和什么？", a:"刻度盘", o:["刻度盘","电池","镜片","风扇"]},
+      {c:"1.8 用指南针“寻宝”", q:"指南针磁针静止后，红色一端指哪方？", a:"北", o:["北","南","东","西"]},
+      {c:"1.8 用指南针“寻宝”", q:"指南针磁针静止后，白色一端指哪方？", a:"南", o:["南","北","东","西"]},
+
+      {c:"2.1 不同种类的动物", q:"科学家根据动物体内是否有什么，将动物分为脊椎动物和无脊椎动物？", a:"脊柱", o:["脊柱","翅膀","羽毛","牙齿"]},
+      {c:"2.1 不同种类的动物", q:"下列哪类属于脊椎动物？", a:"鱼类", o:["鱼类","蚯蚓","蜗牛","水母"]},
+      {c:"2.1 不同种类的动物", q:"鸟类属于哪一类动物？", a:"脊椎动物", o:["脊椎动物","无脊椎动物","植物","微生物"]},
+      {c:"2.1 不同种类的动物", q:"哺乳类属于哪一类动物？", a:"脊椎动物", o:["脊椎动物","无脊椎动物","昆虫","鱼类"]},
+      {c:"2.1 不同种类的动物", q:"无脊椎动物以什么为代表？", a:"昆虫", o:["昆虫","鸟类","鱼类","哺乳类"]},
+      {c:"2.1 不同种类的动物", q:"肉食性动物什么牙齿发达？", a:"犬齿", o:["犬齿","门齿","臼齿","乳牙"]},
+      {c:"2.1 不同种类的动物", q:"植食性动物什么牙齿发达？", a:"门齿", o:["门齿","犬齿","虎牙","智齿"]},
+      {c:"2.1 不同种类的动物", q:"鱼类用什么呼吸？", a:"鳃", o:["鳃","肺","皮肤","气门"]},
+      {c:"2.1 不同种类的动物", q:"鸟类长有什么和翅膀？", a:"羽毛", o:["羽毛","鳞片","甲壳","触角"]},
+      {c:"2.1 不同种类的动物", q:"昆虫身体分为哪三部分？", a:"头、胸、腹", o:["头、胸、腹","头、颈、尾","胸、腹、尾","头、翅、足"]},
+
+      {c:"2.2 动物的繁殖", q:"产卵繁殖的方式叫什么？", a:"卵生", o:["卵生","胎生","发芽","分裂"]},
+      {c:"2.2 动物的繁殖", q:"直接生下小动物的方式叫什么？", a:"胎生", o:["胎生","卵生","孵化","结茧"]},
+      {c:"2.2 动物的繁殖", q:"下列哪类动物通常是卵生动物？", a:"鸟类", o:["鸟类","人类","猫","牛"]},
+      {c:"2.2 动物的繁殖", q:"胎生动物一般用什么方法喂养后代？", a:"哺乳", o:["哺乳","吐丝","光合作用","蜕皮"]},
+      {c:"2.2 动物的繁殖", q:"人类繁衍后代的方式是什么？", a:"胎生", o:["胎生","卵生","羽化","结茧"]},
+      {c:"2.2 动物的繁殖", q:"孔雀开屏主要是为了什么？", a:"吸引异性交配", o:["吸引异性交配","寻找食物","躲避雨水","睡觉"]},
+      {c:"2.2 动物的繁殖", q:"蜻蜓点水是在做什么？", a:"产卵", o:["产卵","喝水","洗澡","捕食"]},
+
+      {c:"2.3 迎接蚕宝宝的到来", q:"蚕的生命是从什么开始的？", a:"蚕卵", o:["蚕卵","蚕茧","蚕蛾","桑叶"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"刚产下的蚕卵是什么颜色？", a:"淡黄色或黄色", o:["淡黄色或黄色","紫黑色","红色","绿色"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"蚕卵要孵化时会变成什么颜色？", a:"紫黑色", o:["紫黑色","淡黄色","雪白色","蓝色"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"蚕卵孵化需要适宜的温度、湿度和什么？", a:"充足的空气", o:["充足的空气","强烈阳光","很多泥土","海水"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"幼虫从卵中破壳而出叫什么？", a:"孵化", o:["孵化","羽化","磁化","融化"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"刚孵化的蚕叫什么？", a:"蚁蚕", o:["蚁蚕","蚕蛹","蚕蛾","成虫"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"刚孵化的蚁蚕是什么颜色？", a:"黑色", o:["黑色","白色","红色","金色"]},
+      {c:"2.3 迎接蚕宝宝的到来", q:"蚕的主要食物是什么？", a:"桑叶", o:["桑叶","竹叶","米饭","鱼肉"]},
+
+      {c:"2.4 幼蚕在生长", q:"蚕身体两侧的小黑点叫什么？", a:"气门", o:["气门","眼睛","耳朵","斑点"]},
+      {c:"2.4 幼蚕在生长", q:"蚕长出新皮、换下旧皮叫什么？", a:"蜕皮", o:["蜕皮","羽化","孵化","磁化"]},
+      {c:"2.4 幼蚕在生长", q:"蚕蜕皮前不吃也不动，叫作什么？", a:"眠", o:["眠","飞","醒","跑"]},
+      {c:"2.4 幼蚕在生长", q:"蚕从蚁蚕到结茧前会蜕几次皮？", a:"4", o:["4","1","2","8"]},
+
+      {c:"2.5 蚕变了模样", q:"蚕吐丝前身体会怎样？", a:"缩短", o:["缩短","变长","变黑","长翅膀"]},
+      {c:"2.5 蚕变了模样", q:"蚕吐丝前身体会发什么颜色？", a:"黄", o:["黄","蓝","黑","紫"]},
+      {c:"2.5 蚕变了模样", q:"蚕吐丝前身体会发亮并变得怎样？", a:"透明", o:["透明","粗糙","坚硬","有鳞片"]},
+      {c:"2.5 蚕变了模样", q:"蚕吐丝时以什么方式摆动？", a:"S形或8字形", o:["S形或8字形","直线形","三角形","圆点形"]},
+      {c:"2.5 蚕变了模样", q:"茧里面的蚕会变成什么？", a:"蚕蛹", o:["蚕蛹","蚕卵","桑叶","鱼"]},
+      {c:"2.5 蚕变了模样", q:"蚕蛹呈什么形？", a:"纺锤形", o:["纺锤形","正方形","星形","扁圆形"]},
+      {c:"2.5 蚕变了模样", q:"蚕蛹通常是什么颜色？", a:"褐色", o:["褐色","纯白色","蓝色","绿色"]},
+      {c:"2.5 蚕变了模样", q:"一个蚕茧由几根蚕丝组成？", a:"1", o:["1","10","100","1000"]},
+      {c:"2.5 蚕变了模样", q:"世界上最早饲养家蚕和抽取蚕丝的国家是哪个？", a:"中国", o:["中国","美国","英国","法国"]},
+
+      {c:"2.6 茧中钻出了蚕蛾", q:"蚕蛹发育成蚕蛾的过程叫什么？", a:"羽化", o:["羽化","孵化","磁化","蒸发"]},
+      {c:"2.6 茧中钻出了蚕蛾", q:"蚕蛾是蚕的什么阶段？", a:"成虫", o:["成虫","卵","幼虫","蛹"]},
+      {c:"2.6 茧中钻出了蚕蛾", q:"蚕蛾不进食，主要任务是什么？", a:"繁殖后代", o:["繁殖后代","吐丝","蜕皮","筑巢"]},
+      {c:"2.6 茧中钻出了蚕蛾", q:"蚕蛾触角呈什么形状？", a:"羽毛状", o:["羽毛状","棒状","针状","圆盘状"]},
+      {c:"2.6 茧中钻出了蚕蛾", q:"蝴蝶触角呈什么形状？", a:"棒状", o:["棒状","羽毛状","环形","螺旋形"]},
+      {c:"2.6 茧中钻出了蚕蛾", q:"鸡蛋孵化必须是什么后的鸡蛋？", a:"受精", o:["受精","冷冻","煮熟","破裂"]},
+
+      {c:"2.7 昆虫的一生", q:"蚕的一生大约多少天？", a:"56", o:["56","7","365","120"]},
+      {c:"2.7 昆虫的一生", q:"蚕的一生经历哪四个阶段？", a:"卵、幼虫、蛹、成虫", o:["卵、幼虫、蛹、成虫","卵、蝌蚪、幼蛙、成蛙","幼虫、成虫、老人、死亡","种子、发芽、开花、结果"]},
+      {c:"2.7 昆虫的一生", q:"蚕一生经历时间最长的是哪个时期？", a:"幼虫期", o:["幼虫期","卵期","蛹期","成虫期"]},
+      {c:"2.7 昆虫的一生", q:"完全变态发育经历哪四个阶段？", a:"卵、幼虫、蛹、成虫", o:["卵、幼虫、蛹、成虫","卵、幼虫、成虫","出生、生长、死亡","卵、蝌蚪、幼蛙、成蛙"]},
+      {c:"2.7 昆虫的一生", q:"不完全变态发育经历哪三个阶段？", a:"卵、幼虫、成虫", o:["卵、幼虫、成虫","卵、幼虫、蛹","卵、蛹、成虫","幼虫、蛹、成虫"]},
+
+      {c:"2.8 动物的生命周期", q:"所有动物都会经历出生、生长发育、繁殖和什么？", a:"死亡", o:["死亡","磁化","开花","结茧"]},
+      {c:"2.8 动物的生命周期", q:"所有动物生命周期的四个阶段是什么？", a:"出生、生长发育、繁殖、死亡", o:["出生、生长发育、繁殖、死亡","卵、幼虫、蛹、成虫","种子、发芽、开花、结果","白天、夜晚、晴天、雨天"]},
+      {c:"2.8 动物的生命周期", q:"蛙的生命周期是卵→蝌蚪→什么→成蛙？", a:"幼蛙", o:["幼蛙","幼鱼","蚕蛹","蚁蚕"]},
+      {c:"2.8 动物的生命周期", q:"人的生命周期中哪个时期长得最快？", a:"婴儿时期", o:["婴儿时期","老年时期","成年时期","中年时期"]},
+      {c:"2.8 动物的生命周期", q:"人的生命周期中除了婴儿时期，哪个时期也长得很快？", a:"青少年时期", o:["青少年时期","老年时期","成年时期","退休时期"]},
+
+      {c:"3.1 地球是我们的家园", q:"世界地球日是每年哪一天？", a:"4月22日", o:["4月22日","6月1日","9月10日","10月1日"]},
+      {c:"3.1 地球是我们的家园", q:"地球是太阳系的什么之一？", a:"行星", o:["行星","恒星","卫星","彗星"]},
+      {c:"3.1 地球是我们的家园", q:"地球有稳定的什么，能保护我们？", a:"磁场", o:["磁场","月海","蚕茧","触角"]},
+      {c:"3.1 地球是我们的家园", q:"地球拥有哪种状态的水？", a:"液态水", o:["液态水","只有冰","只有水蒸气","没有水"]},
+      {c:"3.1 地球是我们的家园", q:"地球的特别之处之一是存在什么？", a:"生命", o:["生命","月海","风暴漩涡","强磁石"]},
+      {c:"3.1 地球是我们的家园", q:"地球有适宜的什么，适合生命生存？", a:"温度", o:["温度","蚕丝","刻度盘","年轮"]},
+      {c:"3.1 地球是我们的家园", q:"地球有稠密的什么？", a:"大气层", o:["大气层","铁制物品","桑叶层","磁针"]},
+      {c:"3.1 地球是我们的家园", q:"地球地表平均温度约是多少？", a:"15°C", o:["15°C","120°C","6000°C","-180°C"]},
+      {c:"3.1 地球是我们的家园", q:"地球质量约是月球的多少倍？", a:"81", o:["81","4","109","7"]},
+      {c:"3.1 地球是我们的家园", q:"地球直径约是月球的多少倍？", a:"4", o:["4","81","109","130万"]},
+
+      {c:"3.2 水的星球", q:"地球表面海洋面积约占多少？", a:"71%", o:["71%","29%","2.5%","1%"]},
+      {c:"3.2 水的星球", q:"地球表面陆地面积约占多少？", a:"29%", o:["29%","71%","97.5%","70%"]},
+      {c:"3.2 水的星球", q:"海洋与陆地面积比例约为多少？", a:"7:3", o:["7:3","3:7","1:1","9:1"]},
+      {c:"3.2 水的星球", q:"地球总水量中约多少为咸水？", a:"97.5%", o:["97.5%","2.5%","70%","29%"]},
+      {c:"3.2 水的星球", q:"地球总水量中约多少为淡水？", a:"2.5%", o:["2.5%","97.5%","71%","29%"]},
+      {c:"3.2 水的星球", q:"约多少淡水以两极冰川形式存在？", a:"70%", o:["70%","7%","29%","97.5%"]},
+      {c:"3.2 水的星球", q:"可供人类直接饮用的地表淡水占全球总水量不足多少？", a:"1%", o:["1%","10%","29%","71%"]},
+
+      {c:"3.3 地球的卫星", q:"月球是地球唯一的什么？", a:"天然卫星", o:["天然卫星","恒星","行星","彗星"]},
+      {c:"3.3 地球的卫星", q:"月球表面没有什么状态的水？", a:"液态水", o:["液态水","岩石","尘土","环形山"]},
+      {c:"3.3 地球的卫星", q:"月球表面没有什么层？", a:"大气层", o:["大气层","岩石层","尘土层","环形山"]},
+      {c:"3.3 地球的卫星", q:"月球白天温度可高于多少？", a:"120°C", o:["120°C","15°C","6000°C","-180°C"]},
+      {c:"3.3 地球的卫星", q:"月球夜间温度可低于多少？", a:"-180°C", o:["-180°C","15°C","120°C","6000°C"]},
+      {c:"3.3 地球的卫星", q:"1609年谁用望远镜观察月球？", a:"伽利略", o:["伽利略","郑和","张衡","牛顿"]},
+      {c:"3.3 地球的卫星", q:"1969年美国哪项任务登陆月球？", a:"阿波罗11号", o:["阿波罗11号","神舟五号","旅行者1号","嫦娥一号"]},
+      {c:"3.3 地球的卫星", q:"月球表面的黑色斑块叫什么？", a:"月海", o:["月海","大红斑","磁场","冰川"]},
+      {c:"3.3 地球的卫星", q:"月球质量约是地球的多少？", a:"1/81", o:["1/81","1/49","1/6","4倍"]},
+      {c:"3.3 地球的卫星", q:"月球体积约是地球的多少？", a:"1/49", o:["1/49","1/81","1/6","109倍"]},
+      {c:"3.3 地球的卫星", q:"月球引力约为地球的多少？", a:"1/6", o:["1/6","1/49","1/81","6倍"]},
+
+      {c:"3.4 我们来造“环形山”", q:"环形山形成的主要原因是什么？", a:"陨石撞击", o:["陨石撞击","海水冲刷","植物生长","人工挖掘"]},
+      {c:"3.4 我们来造“环形山”", q:"撞击球越怎样，形成的环形山越大越深？", a:"大", o:["大","小","轻","软"]},
+      {c:"3.4 我们来造“环形山”", q:"撞击高度越怎样，形成的环形山越大越深？", a:"高", o:["高","低","近","慢"]},
+      {c:"3.4 我们来造“环形山”", q:"地球有厚厚的什么，能烧掉小陨石？", a:"大气层", o:["大气层","蚕茧","液态水","刻度盘"]},
+
+      {c:"3.5 发光发热的太阳", q:"太阳是距地球最近的什么？", a:"恒星", o:["恒星","行星","卫星","彗星"]},
+      {c:"3.5 发光发热的太阳", q:"本身能发光的物体叫什么？", a:"光源", o:["光源","磁源","水源","声源"]},
+      {c:"3.5 发光发热的太阳", q:"月球、镜子不属于光源，因为它们靠什么发亮？", a:"反射", o:["反射","自燃","磁化","蜕皮"]},
+      {c:"3.5 发光发热的太阳", q:"太阳表面温度约是多少？", a:"6000°C", o:["6000°C","15°C","120°C","-180°C"]},
+      {c:"3.5 发光发热的太阳", q:"太阳直径约为地球的多少倍？", a:"109", o:["109","81","4","1/6"]},
+      {c:"3.5 发光发热的太阳", q:"太阳体积约为地球的多少倍？", a:"130万", o:["130万","109","81","4"]},
+
+      {c:"3.6 一天中影子的变化", q:"影子形成的必要条件之一是什么？", a:"光源", o:["光源","磁石","桑叶","年轮"]},
+      {c:"3.6 一天中影子的变化", q:"影子形成还需要什么挡住光？", a:"阻挡物", o:["阻挡物","指南针","鱼鳃","月海"]},
+      {c:"3.6 一天中影子的变化", q:"影子形成还需要落在什么上？", a:"屏", o:["屏","磁极","桑叶","触角"]},
+      {c:"3.6 一天中影子的变化", q:"影子方向总与太阳方向怎样？", a:"相反", o:["相反","相同","无关","重合"]},
+      {c:"3.6 一天中影子的变化", q:"一天中影子长短变化规律是什么？", a:"长→短→长", o:["长→短→长","短→长→短","一直变长","一直不变"]},
+      {c:"3.6 一天中影子的变化", q:"日晷是利用什么原理制造的计时仪器？", a:"影子随时间变化", o:["影子随时间变化","磁铁相吸","昆虫蜕皮","水会蒸发"]},
+
+      {c:"3.7 地球的“兄弟姐妹”", q:"太阳系有几颗行星？", a:"8", o:["8","7","9","12"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"太阳系行星按距离太阳由近及远的顺序是什么？", a:"水星、金星、地球、火星、木星、土星、天王星、海王星", o:["水星、金星、地球、火星、木星、土星、天王星、海王星","地球、水星、金星、火星、木星、土星、天王星、海王星","水星、地球、金星、火星、木星、土星、天王星、海王星","海王星、天王星、土星、木星、火星、地球、金星、水星"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"太阳系中体积最大的是哪颗行星？", a:"木星", o:["木星","水星","金星","地球"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"太阳系中体积最小的是哪颗行星？", a:"水星", o:["水星","木星","土星","海王星"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"太阳系中温度最高的是哪颗行星？", a:"金星", o:["金星","水星","地球","火星"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"哪颗行星的环境与地球最相似？", a:"火星", o:["火星","木星","水星","海王星"]},
+      {c:"3.7 地球的“兄弟姐妹”", q:"木星有著名的什么风暴漩涡？", a:"大红斑", o:["大红斑","月海","黑子","冰川"]},
+
+      {c:"3.8 制作地球科普海报", q:"制作海报的核心是保证资料的什么？", a:"科学性和准确性", o:["科学性和准确性","颜色越多越好","字越小越好","只要漂亮"]},
+      {c:"3.8 制作地球科普海报", q:"地球海报中蓝色通常表示什么？", a:"海洋", o:["海洋","森林和平原","冰川和雪山","高原和山地"]},
+      {c:"3.8 制作地球科普海报", q:"地球海报中绿色通常表示什么？", a:"森林和平原", o:["森林和平原","海洋","冰川和雪山","高原和山地"]},
+      {c:"3.8 制作地球科普海报", q:"地球海报中白色通常表示什么？", a:"冰川和雪山", o:["冰川和雪山","海洋","森林和平原","高原和山地"]},
+      {c:"3.8 制作地球科普海报", q:"地球海报中棕色通常表示什么？", a:"高原和山地", o:["高原和山地","海洋","森林和平原","冰川和雪山"]},
+      {c:"3.8 制作地球科普海报", q:"地球与其他行星最大的区别是拥有各种各样的什么？", a:"生命体", o:["生命体","大红斑","环形山","磁铁"]}
+    ].map((item, index) => ({...item, id: "q" + (index + 1)}));
+
+    const STORAGE_KEY = "grade3_science_quiz_v1";
+    const els = {
+      done: document.getElementById("doneCount"),
+      right: document.getElementById("rightCount"),
+      rate: document.getElementById("rateCount"),
+      wrong: document.getElementById("wrongCount"),
+      reset: document.getElementById("resetBtn"),
+      start: document.getElementById("startBtn"),
+      chapter: document.getElementById("chapterSelect"),
+      quiz: document.getElementById("quizArea"),
+      modes: Array.from(document.querySelectorAll(".mode-btn"))
+    };
+
+    let state = loadState();
+    let mode = state.mode || "random";
+    let queue = [];
+    let currentIndex = 0;
+    let answered = false;
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {done: 0, right: 0, wrongIds: [], answeredIds: [], mode: "random"};
+      } catch {
+        return {done: 0, right: 0, wrongIds: [], answeredIds: [], mode: "random"};
+      }
+    }
+
+    function saveState() {
+      state.mode = mode;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderStats();
+    }
+
+    function renderStats() {
+      els.done.textContent = state.done;
+      els.right.textContent = state.right;
+      els.rate.textContent = state.done ? Math.round(state.right / state.done * 100) + "%" : "0%";
+      els.wrong.textContent = state.wrongIds.length;
+    }
+
+    function shuffle(list) {
+      const arr = [...list];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function setupChapters() {
+      const chapters = [...new Set(QUESTIONS.map(item => item.c))];
+      els.chapter.innerHTML = chapters.map(c => `<option value="${c}">${c}</option>`).join("");
+      if (state.chapter && chapters.includes(state.chapter)) els.chapter.value = state.chapter;
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      els.modes.forEach(btn => btn.classList.toggle("active", btn.dataset.mode === mode));
+      els.chapter.disabled = mode !== "chapter";
+      saveState();
+    }
+
+    function buildQueue() {
+      if (mode === "chapter") {
+        state.chapter = els.chapter.value;
+        return QUESTIONS.filter(item => item.c === els.chapter.value);
+      }
+      if (mode === "wrong") {
+        return QUESTIONS.filter(item => state.wrongIds.includes(item.id));
+      }
+      return shuffle(QUESTIONS);
+    }
+
+    function startPractice() {
+      queue = buildQueue();
+      currentIndex = 0;
+      answered = false;
+      saveState();
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      if (!queue.length) {
+        const msg = mode === "wrong" ? "现在没有错题，先去随机练习吧！" : "这个练习还没有题目。";
+        els.quiz.innerHTML = `<div class="empty">${msg}</div>`;
+        return;
+      }
+      const item = queue[currentIndex];
+      const choices = shuffle(item.o);
+      const progress = Math.round((currentIndex) / queue.length * 100);
+      els.quiz.innerHTML = `
+        <div class="meta">
+          <span class="pill">${item.c}</span>
+          <span class="pill">第 ${currentIndex + 1} / ${queue.length} 题</span>
+        </div>
+        <div class="progress"><div class="bar" style="width:${progress}%"></div></div>
+        <h2 class="question">${item.q}</h2>
+        <div class="options">
+          ${choices.map((choice, idx) => `
+            <button class="option" type="button" data-choice="${escapeHtml(choice)}">
+              <span class="letter">${"ABCD"[idx]}</span>
+              <span>${choice}</span>
+            </button>
+          `).join("")}
+        </div>
+        <div class="feedback" id="feedback">请选择一个答案。</div>
+        <div class="actions">
+          <button class="ghost" id="prevBtn" type="button">上一题</button>
+          <button class="primary" id="nextBtn" type="button">下一题</button>
+        </div>
+      `;
+      document.querySelectorAll(".option").forEach(btn => btn.addEventListener("click", () => checkAnswer(btn, item)));
+      document.getElementById("prevBtn").addEventListener("click", previousQuestion);
+      document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    function checkAnswer(button, item) {
+      if (answered) return;
+      answered = true;
+      const picked = button.dataset.choice;
+      const correct = picked === item.a;
+      const feedback = document.getElementById("feedback");
+      document.querySelectorAll(".option").forEach(btn => {
+        btn.disabled = true;
+        if (btn.dataset.choice === item.a) btn.classList.add("correct");
+      });
+      if (correct) {
+        feedback.textContent = "✅ 答对啦！";
+        feedback.className = "feedback good";
+        state.right += 1;
+        state.wrongIds = state.wrongIds.filter(id => id !== item.id);
+      } else {
+        button.classList.add("wrong");
+        feedback.textContent = "❌ 答错了，正确答案是：" + item.a;
+        feedback.className = "feedback bad";
+        if (!state.wrongIds.includes(item.id)) state.wrongIds.push(item.id);
+      }
+      state.done += 1;
+      if (!state.answeredIds.includes(item.id)) state.answeredIds.push(item.id);
+      saveState();
+    }
+
+    function nextQuestion() {
+      if (!queue.length) return;
+      currentIndex = (currentIndex + 1) % queue.length;
+      answered = false;
+      renderQuestion();
+    }
+
+    function previousQuestion() {
+      if (!queue.length) return;
+      currentIndex = (currentIndex - 1 + queue.length) % queue.length;
+      answered = false;
+      renderQuestion();
+    }
+
+    els.modes.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
+    els.chapter.addEventListener("change", () => {
+      state.chapter = els.chapter.value;
+      if (mode === "chapter") startPractice();
+      saveState();
+    });
+    els.start.addEventListener("click", startPractice);
+    els.reset.addEventListener("click", () => {
+      if (!confirm("确定要清空答题统计和错题收藏吗？")) return;
+      state = {done: 0, right: 0, wrongIds: [], answeredIds: [], mode, chapter: els.chapter.value};
+      localStorage.removeItem(STORAGE_KEY);
+      saveState();
+      startPractice();
+    });
+
+    setupChapters();
+    setMode(mode);
+    renderStats();
+    startPractice();
+  </script>
+</body>
+</html>
